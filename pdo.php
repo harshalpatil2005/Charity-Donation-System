@@ -1,11 +1,14 @@
 <?php
-//$pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=ngo','root', '');
+$config = require __DIR__ . '/config.php';
 
 try {
-    $pdo = new PDO('mysql:host=127.0.0.1;port=3306;dbname=ngo', 'root', '');
+    $pdo = new PDO(
+        "mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']};charset=utf8mb4",
+        $config['user'],
+        $config['pass']
+    );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    //echo "Connected successfully";
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+    // Don't show the raw error to visitors; it can reveal server details
+    die("Database connection failed. Please check your settings.");
 }
-?>
